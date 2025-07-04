@@ -3,8 +3,6 @@ pipeline {
 
   environment {
     AWS_DEFAULT_REGION = 'ap-south-1'
-    AWS_ACCESS_KEY_ID = credentials('aws-creds').username
-    AWS_SECRET_ACCESS_KEY = credentials('aws-creds').password
   }
 
   stages {
@@ -16,10 +14,12 @@ pipeline {
 
     stage('Deploy to S3') {
       steps {
-        sh '''
-          aws s3 cp . s3://localstaticwebsite/ --recursive \
-            --region $AWS_DEFAULT_REGION
-        '''
+        withCredentials([usernamePassword(credentialsId: 'aws-creds', usernameVariable: 'AWS_ACCESS_KEY_ID', passwordVariable: 'AWS_SECRET_ACCESS_KEY')]) {
+          sh '''
+            aws s3 cp . s3://localstaticwebsite/ --recursive \
+              --region $AWS_DEFAULT_REGION
+          '''
+        }
       }
     }
   }
