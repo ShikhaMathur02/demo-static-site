@@ -3,7 +3,8 @@ pipeline {
 
   environment {
     AWS_DEFAULT_REGION = 'ap-south-1'
-    AWS_CREDENTIALS = credentials('aws-creds') // Jenkins credentials ID
+    AWS_ACCESS_KEY_ID = credentials('aws-creds').username
+    AWS_SECRET_ACCESS_KEY = credentials('aws-creds').password
   }
 
   stages {
@@ -17,9 +18,7 @@ pipeline {
       steps {
         sh '''
           aws s3 cp . s3://localstaticwebsite/ --recursive \
-          --region $AWS_DEFAULT_REGION \
-          --access-key $AWS_CREDENTIALS_USR \
-          --secret-key $AWS_CREDENTIALS_PSW
+            --region $AWS_DEFAULT_REGION
         '''
       }
     }
