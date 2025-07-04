@@ -22,10 +22,11 @@ pipeline {
           )
         ]) {
           bat """
-            set AWS_ACCESS_KEY_ID=%AWS_ACCESS_KEY_ID%
-            set AWS_SECRET_ACCESS_KEY=%AWS_SECRET_ACCESS_KEY%
-            aws s3 cp . s3://localstaticbucket/ --rebucketcursive --region %AWS_DEFAULT_REGION%
+           set AWS_ACCESS_KEY_ID=%AWS_ACCESS_KEY_ID%
+           set AWS_SECRET_ACCESS_KEY=%AWS_SECRET_ACCESS_KEY%
+           aws s3 cp . s3://localstaticbucket/ --recursive --region %AWS_DEFAULT_REGION%
           """
+
         }
       }
     }
